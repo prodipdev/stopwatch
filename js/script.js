@@ -15,10 +15,14 @@ let timeInterval = null;
 // Timer Mechanism Methods
 const timerMethods = () => {
     sec++
-    if (sec === 60) {
+    if (sec === 60 && hours <= 24) {
         sec = 0;
         min++;
-        if (min === 60) {
+        if (hours === 24) {
+            // Reset timer when 24 hours counting fulfilled
+            resetTimer();
+        }
+        else if (min === 60) {
             min = 0;
             hours++;
         }
@@ -77,19 +81,24 @@ startStopBtn.addEventListener('click', () => {
 
 // reset Timer
 resetBtn.addEventListener('click', () => {
-    clearInterval(timeInterval);
-    [sec, min, hours] = [0, 0, 0];
-    timerDisplay.innerText = `00:00:00`;
-
-    // Disabled reset button
-    resetBtn.classList.add("opacity-40", "cursor-not-allowed");
-    // Create play button
-    isStop = true;
-    startStopBtn.innerHTML = `<i class="fa-solid fa-circle-play">`;
-    startStopBtn.classList.remove("text-amber-500", "active:text-amber-600");
-    startStopBtn.classList.add("text-green-500", "active:text-green-600");
-
-    // Set default badge
-    timerBadge.classList.remove("bg-green-500", "shadow-green-400", "bg-amber-500", "shadow-amber-400");
-    timerBadge.classList.add("bg-rose-500", "shadow-rose-400");
+    resetTimer();
 });
+
+// Reset Timer Function
+const resetTimer = () => {
+    clearInterval(timeInterval);
+[sec, min, hours] = [0, 0, 0];
+timerDisplay.innerText = `00:00:00`;
+
+// Disabled reset button
+resetBtn.classList.add("opacity-40", "cursor-not-allowed");
+// Create play button
+isStop = true;
+startStopBtn.innerHTML = `<i class="fa-solid fa-circle-play">`;
+startStopBtn.classList.remove("text-amber-500", "active:text-amber-600");
+startStopBtn.classList.add("text-green-500", "active:text-green-600");
+
+// Set default badge
+timerBadge.classList.remove("bg-green-500", "shadow-green-400", "bg-amber-500", "shadow-amber-400");
+timerBadge.classList.add("bg-rose-500", "shadow-rose-400");
+};
