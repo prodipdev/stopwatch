@@ -1,56 +1,18 @@
 const timerDisplay = document.getElementById("timer-display");
+const timerBadge = document.getElementById("timer-badge");
 
-// Control Buttons
-const startBtn = document.getElementById("start");
-const stopBtn = document.getElementById("stop");
+// Get Control Buttons
+const startStopBtn = document.getElementById("start-stop");
 const resetBtn = document.getElementById("reset");
 
-// Timing Count Digits
+// Timer Count Digits
 let sec = 0;
 let min = 0;
 let hours = 0;
 // Stored time interval
 let timeInterval = null;
 
-// Start Timer
-startBtn.addEventListener('click', () => {
-    // Fixing bug for multiple clicked on start button
-    if (timeInterval !== null) {
-        clearInterval(timeInterval);
-    }
-    timeInterval = setInterval(timerMethods, 1000);
-
-    // Button UI Control
-    startBtn.classList.add("opacity-40", "cursor-not-allowed");
-    stopBtn.classList.remove("opacity-40", "cursor-not-allowed");
-    resetBtn.classList.remove("opacity-40", "cursor-not-allowed");
-
-});
-
-// Stop Timer
-stopBtn.addEventListener('click', () => {
-    clearInterval(timeInterval);
-
-    // Button UI Control
-    startBtn.classList.remove("opacity-40", "cursor-not-allowed");
-    stopBtn.classList.add("opacity-40", "cursor-not-allowed");
-    resetBtn.classList.remove("opacity-40", "cursor-not-allowed");
-})
-
-// reset Timer
-resetBtn.addEventListener('click', () => {
-    clearInterval(timeInterval);
-    [sec, min, hours] = [0, 0, 0];
-    timerDisplay.innerText = `00:00:00`;
-
-    // Button UI Control
-    startBtn.classList.remove("opacity-40", "cursor-not-allowed");
-    stopBtn.classList.add("opacity-40", "cursor-not-allowed");
-    resetBtn.classList.add("opacity-40", "cursor-not-allowed");
-})
-
-
-// Time Mechanism Methods
+// Timer Mechanism Methods
 const timerMethods = () => {
     sec++
     if (sec === 60) {
@@ -68,4 +30,66 @@ const timerMethods = () => {
 
     // Display Time
     timerDisplay.innerText = `${setHour}:${setMin}:${setSec}`;
-}
+};
+
+// Start/Stop Timer Button
+let isStop = true;
+startStopBtn.addEventListener('click', () => {
+    // Starting Timer
+    if (isStop) {
+        isStop = false;
+        // Fixing bug for multiple clicked on start button
+        if (timeInterval !== null) {
+            clearInterval(timeInterval);
+        }
+        // Always increment 1 second
+        timeInterval = setInterval(timerMethods, 1000);
+
+        // Remove play button
+        startStopBtn.classList.remove("text-green-500", "active:text-green-600")
+        // Create stop button
+        startStopBtn.innerHTML = `<i class="fa-solid fa-circle-stop"></i>`;
+        startStopBtn.classList.add("text-amber-500", "active:text-amber-600")
+        // Enable reset button
+        resetBtn.classList.remove("opacity-40", "cursor-not-allowed");
+
+        // Set start badge
+        timerBadge.classList.remove("bg-rose-500", "shadow-rose-400", "bg-amber-500", "shadow-amber-400");
+        timerBadge.classList.add("bg-green-500", "shadow-green-400");
+    }
+    // Stop Timer
+    else {
+        isStop = true;
+        clearInterval(timeInterval);
+
+        // Remove stop button
+        startStopBtn.classList.remove("text-amber-500", "active:text-amber-600");
+        // Create play button
+        startStopBtn.innerHTML = `<i class="fa-solid fa-circle-play">`;
+        startStopBtn.classList.add("text-green-500", "active:text-green-600");
+
+        // Set stop badge
+        timerBadge.classList.remove("bg-green-500", "shadow-green-400");
+        timerBadge.classList.add("bg-amber-500", "shadow-amber-400");
+    }
+});
+
+
+// reset Timer
+resetBtn.addEventListener('click', () => {
+    clearInterval(timeInterval);
+    [sec, min, hours] = [0, 0, 0];
+    timerDisplay.innerText = `00:00:00`;
+
+    // Disabled reset button
+    resetBtn.classList.add("opacity-40", "cursor-not-allowed");
+    // Create play button
+    isStop = true;
+    startStopBtn.innerHTML = `<i class="fa-solid fa-circle-play">`;
+    startStopBtn.classList.remove("text-amber-500", "active:text-amber-600");
+    startStopBtn.classList.add("text-green-500", "active:text-green-600");
+
+    // Set default badge
+    timerBadge.classList.remove("bg-green-500", "shadow-green-400", "bg-amber-500", "shadow-amber-400");
+    timerBadge.classList.add("bg-rose-500", "shadow-rose-400");
+});
