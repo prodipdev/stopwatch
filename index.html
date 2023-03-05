@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Watch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <main>
+        <!-- Stop Watch -->
+        <section class="min-h-screen flex flex-col justify-center items-center gap-8 text-white">
+            <div class="bg-indigo-500 h-36 w-36 rounded-full flex justify-center items-center">
+                <span id="timer-display" class="text-3xl font-bold">00:00:00</span>
+            </div>
+            <div class="flex gap-4 font-semibold">
+                <button id="start" class="bg-green-500 hover:bg-green-600 active:bg-green-700 px-3 py-1 rounded-md">Start</button>
+                <button id="stop" class="bg-amber-500 hover:bg-amber-600 active:bg-amber-700 px-3 py-1 rounded-md opacity-40 cursor-not-allowed">Stop</button>
+                <button id="reset" class="bg-rose-500 hover:bg-rose-600 active:bg-rose-700 px-3 py-1 rounded-md opacity-40 cursor-not-allowed">Reset</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- External JS -->
+    <script src="js/script.js"></script>
+</body>
+</html>
